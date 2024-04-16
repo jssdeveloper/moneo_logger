@@ -57,7 +57,8 @@ conn = sqlite3.connect("logger.db")
 c = conn.cursor()
 
 c.execute('''CREATE TABLE IF NOT EXISTS moneo_log
-             (id INTEGER PRIMARY KEY, invoices TEXT, vatcodes TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
+             (id INTEGER PRIMARY KEY, invoices TEXT, vatcodes TEXT, created_at TIMESTAMP DEFAULT (DATETIME('now', '+3 hours')))''')
+
 
 
 invoices = mon.create_invoice()
