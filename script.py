@@ -51,17 +51,15 @@ class MoneoApi:
 
 mon = MoneoApi(test_api_key, test_comp_id, test_server)
 
-# create sqlite connection
+# sqlite conn
 import sqlite3
 conn = sqlite3.connect("logger.db")
 c = conn.cursor()
 
-# Create table if not exists
 c.execute('''CREATE TABLE IF NOT EXISTS moneo_log
              (id INTEGER PRIMARY KEY, invoices TEXT, vatcodes TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
 
 
-# while True:
 invoices = mon.create_invoice()
 vatcodes = mon.create_vatcode()
 
@@ -75,15 +73,9 @@ except TypeError:
     last_db_invoice, last_db_vatcode = None, None
 
 #prod
-# if invoices != last_db_invoice or vatcodes != last_db_vatcode:
-#     c.execute("INSERT INTO moneo_log (invoices, vatcodes) VALUES (?, ?)", (invoices, vatcodes))
-#     conn.commit()
-#     print("New record inserted")
-# else:
-#     print("No new records to insert")
-
-
-#testing save all:
-
-c.execute("INSERT INTO moneo_log (invoices, vatcodes) VALUES (?, ?)", (invoices, vatcodes))
-    # time.sleep(5)
+if invoices != last_db_invoice or vatcodes != last_db_vatcode:
+    c.execute("INSERT INTO moneo_log (invoices, vatcodes) VALUES (?, ?)", (invoices, vatcodes))
+    conn.commit()
+    print("New record inserted")
+else:
+    print("No new records to insert")
