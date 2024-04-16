@@ -28,10 +28,9 @@ class MoneoApi:
         
         message = res.json()["result"][0][1][0]
         if message == None:
-            message = "VAT code created successfully"
+            message = "Invoice created successfully"
         return message
 
-    
     def create_vatcode(self):
         body = self.default_body
         body["data"] = {
@@ -41,7 +40,6 @@ class MoneoApi:
             }}
         
         res = requests.post(self.server + "/api/v2/finance.taxes/create/", json=body, headers=self.headers)
-        
 
         message = res.json()["result"][0][1][0]
         if message == None:
@@ -80,3 +78,5 @@ if invoices != last_db_invoice or vatcodes != last_db_vatcode:
     print("New record inserted")
 else:
     print("No new records to insert")
+
+conn.close()
